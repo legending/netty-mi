@@ -13,7 +13,6 @@ public class GroupChannelManager {
     private GroupChannelManager() {
     }
 
-    ;
     private static ChannelGroup channels = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
     //记录当前用户与通道Map
     private static ConcurrentMap<String, String> userChannelMap = new ConcurrentHashMap();

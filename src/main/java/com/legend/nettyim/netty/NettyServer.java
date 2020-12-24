@@ -28,9 +28,9 @@ public class NettyServer implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         log.debug("-------------->" + "项目启动，now=" + new Date());
-        log.debug("获取到的参数： " + args.getOptionNames());
-        log.debug("获取到的参数： " + args.getNonOptionArgs());
-        log.debug("获取到的参数： " + args.getSourceArgs());
+        log.debug("获取到的参数：" + args.getOptionNames());
+        log.debug("获取到的参数：" + args.getNonOptionArgs());
+        log.debug("获取到的参数：" + args.getSourceArgs());
         startServer(args);
     }
 

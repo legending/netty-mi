@@ -20,8 +20,8 @@ public class AppUserController {
     @RequestMapping(value = "/info", method = RequestMethod.POST)
     @ResponseBody
     public ApiResult getUserInfo(@RequestParam Map map) {
-        Map appuser = appUserService.getUserInfo(map);
-        return ApiResult.success(appuser);
+        Map appUser = appUserService.getUserInfo(map);
+        return ApiResult.success(appUser);
     }
 
 }

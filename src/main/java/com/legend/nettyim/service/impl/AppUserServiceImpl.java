@@ -29,7 +29,8 @@ public class AppUserServiceImpl implements IAppUserService {
             //生成图像,目前只有314张图片
             int imgIndex = RandomUtil.randomInt(1, 314);
             user.setHead("head-" + imgIndex);
-            user.setNickName(appValue.randomRobotName());
+            String name = appValue.randomRobotName();
+            user.setNickName(name);
             user.setCreateTime(new Date());
             appuserMapper.insertSelective(user);
             //appuser=BeanUtil.beanToMap(user);

@@ -28,7 +28,7 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<Object> 
     private static final Logger log = LoggerFactory.getLogger(WebSocketServerHandler.class);
 
 
-    private WebSocketServerHandshaker handshaker;
+    private WebSocketServerHandshaker handShaker;
 
     //工作线程组
     private static ThreadPoolExecutor workPool = ThreadUtil.newExecutor(10, 20);
@@ -65,11 +65,11 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<Object> 
 
         // 构造握手响应返回，本机测试
         WebSocketServerHandshakerFactory wsFactory = new WebSocketServerHandshakerFactory("ws://localhost:1949/222websocket/2222", null, false);
-        handshaker = wsFactory.newHandshaker(req);
-        if (handshaker == null) {
+        handShaker = wsFactory.newHandshaker(req);
+        if (handShaker == null) {
             WebSocketServerHandshakerFactory.sendUnsupportedVersionResponse(ctx.channel());
         } else {
-            handshaker.handshake(ctx.channel(), req);
+            handShaker.handshake(ctx.channel(), req);
         }
     }
 
@@ -77,7 +77,7 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<Object> 
         log.debug("handleWebSocketFrame:" + Thread.currentThread().getName());
         // 判断是否是关闭链路的指令
         if (frame instanceof CloseWebSocketFrame) {
-            handshaker.close(ctx.channel(), (CloseWebSocketFrame) frame.retain());
+            handShaker.close(ctx.channel(), (CloseWebSocketFrame) frame.retain());
             return;
         }
         // 判断是否是Ping消息
