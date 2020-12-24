@@ -75,7 +75,7 @@
   </update>
 
 
-    <select id="slectInfo" parameterType="map" resultType="map">
+    <select id="selectInfo" parameterType="map" resultType="map">
 
       select * from app_user where 1=1
 

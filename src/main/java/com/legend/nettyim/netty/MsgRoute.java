@@ -77,6 +77,6 @@ public class MsgRoute {
             result = userProc.getLineNum(ctx, imreq);
             return result;
         }
-        return result;
+        return null;
     }
 }

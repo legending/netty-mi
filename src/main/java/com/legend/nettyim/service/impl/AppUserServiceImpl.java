@@ -23,7 +23,7 @@ public class AppUserServiceImpl implements IAppUserService {
     @Override
     public Map getUserInfo(Map map) {
 
-        Map appuser = appuserMapper.slectInfo(map);
+        Map appuser = appuserMapper.selectInfo(map);
         if (appuser == null) {
             Appuser user = new Appuser();
             //生成图像,目前只有314张图片

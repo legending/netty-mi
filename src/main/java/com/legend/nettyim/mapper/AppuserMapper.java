@@ -18,5 +18,5 @@ public interface AppuserMapper {
     int updateByPrimaryKey(Appuser record);
 
 
-    Map slectInfo(Map map);
+    Map selectInfo(Map map);
 }
