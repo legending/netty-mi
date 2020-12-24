@@ -5,29 +5,28 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AppVule {
+public class AppValue {
 
     @Value("${websocket.url}")
-    public     String wsUrl;
+    public String wsUrl;
 
 
     @Value("${websocket.port}")
-    public     String wsPort;
+    public String wsPort;
 
     @Value("${robotNames}")
-    public  String robotNames;
+    public String robotNames;
 
-   public  static String[]  robotNameArray = new String[]{};
+    public static String[] robotNameArray = new String[]{};
 
     //返回随机会员名
-    public String randomRobotName(){
-        if (robotNameArray.length>0){
+    public String randomRobotName() {
+        if (robotNameArray.length > 0) {
 
-        }else {
-            synchronized (this){
-                if (robotNameArray.length<=0)
-                {
-                    robotNameArray=robotNames.split(",");
+        } else {
+            synchronized (this) {
+                if (robotNameArray.length <= 0) {
+                    robotNameArray = robotNames.split(",");
                 }
 
             }

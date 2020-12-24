@@ -27,38 +27,40 @@ public class MsgProc {
     private MsgrecordMapper msgrecordMapper;
 
     //处理组消息
-     public ApiResult groupMsg(ChannelHandlerContext ctx, IMRequest request){
-                Map resultMap=new HashMap();
-                Msgrecord msgrecord=new Msgrecord();
-                //防止xss攻击
-                request.getParam().put("content",HtmlUtil.filter((String) request.getParam().get("content")));
-                BeanUtil.fillBeanWithMap(request.getParam(),msgrecord,true,true);
-                msgrecord.setCreateTime(new Date());
-                 InetSocketAddress insocket = (InetSocketAddress) ctx.channel().remoteAddress();
-                 String clientIP = insocket.getAddress().getHostAddress();
-                msgrecord.setIp(clientIP);
-                msgrecordMapper.insertSelective(msgrecord);
-                ApiResult apiResult=null;
-                resultMap.put(MsgProtocol.quan_min_ga_liao,msgrecord);
-                resultMap.put("param",request.getParam());
-                apiResult= ApiResult.success(resultMap);
+    public ApiResult groupMsg(ChannelHandlerContext ctx, IMRequest request) {
+        Map resultMap = new HashMap();
+        Msgrecord msgrecord = new Msgrecord();
+        //防止xss攻击
+        request.getParam().put("content", HtmlUtil.filter((String) request.getParam().get("content")));
+        BeanUtil.fillBeanWithMap(request.getParam(), msgrecord, true, true);
+        msgrecord.setCreateTime(new Date());
+        InetSocketAddress insocket = (InetSocketAddress) ctx.channel().remoteAddress();
+        String clientIP = insocket.getAddress().getHostAddress();
+        msgrecord.setIp(clientIP);
+        msgrecordMapper.insertSelective(msgrecord);
+        ApiResult apiResult = null;
+        resultMap.put(MsgProtocol.quan_min_ga_liao, msgrecord);
+        resultMap.put("param", request.getParam());
+        apiResult = ApiResult.success(resultMap);
 
-                 apiResult.setUrl(request.getUrl());
-               for (Channel channel : GroupChannelManager.getAllChannel()) {
-                        //                        if (channel != ctx.channel()){
-                        //                            channel.writeAndFlush(new TextWebSocketFrame(channel.remoteAddress()+"  "+request));
-                        //                        }else {
-                        //                            channel.writeAndFlush(new TextWebSocketFrame("我是菜鸡服务器:"+"  "+request ));
-                        //                        }
-
-
-                   channel.writeAndFlush(new TextWebSocketFrame(JSON.toJSONString(apiResult)));
-               }
+        apiResult.setUrl(request.getUrl());
+        for (Channel channel : GroupChannelManager.getAllChannel()) {
+            //                        if (channel != ctx.channel()){
+            //                            channel.writeAndFlush(new TextWebSocketFrame(channel.remoteAddress()+"  "+request));
+            //                        }else {
+            //                            channel.writeAndFlush(new TextWebSocketFrame("我是菜鸡服务器:"+"  "+request ));
+            //                        }
 
 
-       //  GroupChannelManager.getAllChannel().find()
+            channel.writeAndFlush(new TextWebSocketFrame(JSON.toJSONString(apiResult)));
+        }
 
-                return apiResult;
-    };
+
+        //  GroupChannelManager.getAllChannel().find()
+
+        return apiResult;
+    }
+
+    ;
 
 }

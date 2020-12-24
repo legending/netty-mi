@@ -22,14 +22,15 @@ import java.util.Date;
 public class NettyServer implements ApplicationRunner {
     private static final Logger log = LoggerFactory.getLogger(NettyServer.class);
 
-@Value("${websocket.port}")
-private String port;
+    @Value("${websocket.port}")
+    private String port;
+
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        log.debug("-------------->"+"项目启动，now="+new Date());
-        log.debug("获取到的参数： "+args.getOptionNames());
-        log.debug("获取到的参数： "+args.getNonOptionArgs());
-        log.debug("获取到的参数： "+args.getSourceArgs());
+        log.debug("-------------->" + "项目启动，now=" + new Date());
+        log.debug("获取到的参数： " + args.getOptionNames());
+        log.debug("获取到的参数： " + args.getNonOptionArgs());
+        log.debug("获取到的参数： " + args.getSourceArgs());
         startServer(args);
     }
 
@@ -50,10 +51,10 @@ private String port;
             });
             //Thread.sleep(1000*40);
 
-            ChannelFuture future=b.bind(Integer.valueOf(port));  //第一条线程从这里开始创建
-            future=future.sync();
+            ChannelFuture future = b.bind(Integer.valueOf(port));  //第一条线程从这里开始创建
+            future = future.sync();
             Channel ch = future.channel();
-           // Channel ch = b.bind(Integer.valueOf(port)).sync().channel();
+            // Channel ch = b.bind(Integer.valueOf(port)).sync().channel();
             log.info("Web socket server started at port " + port + '.');
 
 

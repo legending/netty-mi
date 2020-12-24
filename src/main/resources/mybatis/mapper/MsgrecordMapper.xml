@@ -1,29 +1,30 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.legend.nettyim.mapper.MsgrecordMapper" >
-  <resultMap id="BaseResultMap" type="com.legend.nettyim.entity.Msgrecord" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="content" property="content" jdbcType="VARCHAR" />
-    <result column="from_user_id" property="fromUserId" jdbcType="INTEGER" />
-    <result column="to_user_id" property="toUserId" jdbcType="INTEGER" />
-    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-    <result column="group_id" property="groupId" jdbcType="INTEGER" />
-    <result column="ip" property="ip" jdbcType="VARCHAR" />
-  </resultMap>
-  <sql id="Base_Column_List" >
+<mapper namespace="com.legend.nettyim.mapper.MsgrecordMapper">
+    <resultMap id="BaseResultMap" type="com.legend.nettyim.entity.Msgrecord">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="content" property="content" jdbcType="VARCHAR"/>
+        <result column="from_user_id" property="fromUserId" jdbcType="INTEGER"/>
+        <result column="to_user_id" property="toUserId" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="group_id" property="groupId" jdbcType="INTEGER"/>
+        <result column="ip" property="ip" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
     id, content, from_user_id, to_user_id, create_time, group_id, ip
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    from msg_record
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from msg_record
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from msg_record
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.legend.nettyim.entity.Msgrecord" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+    <insert id="insert" parameterType="com.legend.nettyim.entity.Msgrecord" useGeneratedKeys="true" keyProperty="id"
+            keyColumn="id">
     insert into msg_record ( content, from_user_id,
       to_user_id, create_time, group_id, 
       ip)
@@ -31,76 +32,77 @@
       #{toUserId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{groupId,jdbcType=INTEGER}, 
       #{ip,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.legend.nettyim.entity.Msgrecord" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-    insert into msg_record
-    <trim prefix="(" suffix=")" suffixOverrides="," >
+    <insert id="insertSelective" parameterType="com.legend.nettyim.entity.Msgrecord" useGeneratedKeys="true"
+            keyProperty="id" keyColumn="id">
+        insert into msg_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
 
-      <if test="content != null" >
-        content,
-      </if>
-      <if test="fromUserId != null" >
-        from_user_id,
-      </if>
-      <if test="toUserId != null" >
-        to_user_id,
-      </if>
-      <if test="createTime != null" >
-        create_time,
-      </if>
-      <if test="groupId != null" >
-        group_id,
-      </if>
-      <if test="ip != null" >
-        ip,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="content != null">
+                content,
+            </if>
+            <if test="fromUserId != null">
+                from_user_id,
+            </if>
+            <if test="toUserId != null">
+                to_user_id,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="groupId != null">
+                group_id,
+            </if>
+            <if test="ip != null">
+                ip,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
 
-      <if test="content != null" >
-        #{content,jdbcType=VARCHAR},
-      </if>
-      <if test="fromUserId != null" >
-        #{fromUserId,jdbcType=INTEGER},
-      </if>
-      <if test="toUserId != null" >
-        #{toUserId,jdbcType=INTEGER},
-      </if>
-      <if test="createTime != null" >
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="groupId != null" >
-        #{groupId,jdbcType=INTEGER},
-      </if>
-      <if test="ip != null" >
-        #{ip,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.legend.nettyim.entity.Msgrecord" >
-    update msg_record
-    <set >
-      <if test="content != null" >
-        content = #{content,jdbcType=VARCHAR},
-      </if>
-      <if test="fromUserId != null" >
-        from_user_id = #{fromUserId,jdbcType=INTEGER},
-      </if>
-      <if test="toUserId != null" >
-        to_user_id = #{toUserId,jdbcType=INTEGER},
-      </if>
-      <if test="createTime != null" >
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="groupId != null" >
-        group_id = #{groupId,jdbcType=INTEGER},
-      </if>
-      <if test="ip != null" >
-        ip = #{ip,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.legend.nettyim.entity.Msgrecord" >
+            <if test="content != null">
+                #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="fromUserId != null">
+                #{fromUserId,jdbcType=INTEGER},
+            </if>
+            <if test="toUserId != null">
+                #{toUserId,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="groupId != null">
+                #{groupId,jdbcType=INTEGER},
+            </if>
+            <if test="ip != null">
+                #{ip,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.legend.nettyim.entity.Msgrecord">
+        update msg_record
+        <set>
+            <if test="content != null">
+                content = #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="fromUserId != null">
+                from_user_id = #{fromUserId,jdbcType=INTEGER},
+            </if>
+            <if test="toUserId != null">
+                to_user_id = #{toUserId,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="groupId != null">
+                group_id = #{groupId,jdbcType=INTEGER},
+            </if>
+            <if test="ip != null">
+                ip = #{ip,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.legend.nettyim.entity.Msgrecord">
     update msg_record
     set content = #{content,jdbcType=VARCHAR},
       from_user_id = #{fromUserId,jdbcType=INTEGER},

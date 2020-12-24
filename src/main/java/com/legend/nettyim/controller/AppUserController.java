@@ -15,12 +15,12 @@ import java.util.Map;
 @RequestMapping("/appUser")
 public class AppUserController {
     @Autowired
-    private IAppUserService  appUserService;
+    private IAppUserService appUserService;
 
     @RequestMapping(value = "/info", method = RequestMethod.POST)
     @ResponseBody
-    public ApiResult getUserInfo(@RequestParam Map map){
-        Map appuser=appUserService.getUserInfo(map);
+    public ApiResult getUserInfo(@RequestParam Map map) {
+        Map appuser = appUserService.getUserInfo(map);
         return ApiResult.success(appuser);
     }
 

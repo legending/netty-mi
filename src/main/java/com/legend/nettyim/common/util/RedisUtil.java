@@ -2,7 +2,7 @@ package com.legend.nettyim.common.util;
 
 
 import cn.hutool.core.util.StrUtil;
-import com.legend.nettyim.common.util.Constants.AppVule;
+import com.legend.nettyim.common.util.Constants.AppValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import redis.clients.jedis.Jedis;
@@ -16,19 +16,19 @@ public class RedisUtil {
 
     private RedisUtil() {
     }
+
     private static Logger _logger = LoggerFactory.getLogger(RedisUtil.class);
-    ;
 
     //protected static final  ThreadLocal<Jedis> threadLocalJedis = new ThreadLocal<Jedis>();
 
     //Redis服务器IP
-    private static String ADDR_ARRAY = ((AppVule)SpringUtil.getBean("appVule")).redisHost;
+    private static String ADDR_ARRAY = ((AppValue) SpringUtil.getBean("appValue")).redisHost;
 
     //Redis的端口号
-    private static int PORT = Integer.parseInt(((AppVule)SpringUtil.getBean("appVule")).redisPort);
+    private static int PORT = Integer.parseInt(((AppValue) SpringUtil.getBean("appValue")).redisPort);
 
     //访问密码
-    private static String AUTH = ((AppVule)SpringUtil.getBean("appVule")).redisPassword;
+    private static String AUTH = ((AppValue) SpringUtil.getBean("appValue")).redisPassword;
 
     //可用连接实例的最大数目，默认值为8；
     //如果赋值为-1，则表示不限制；如果pool已经分配了maxActive个jedis实例，则此时pool的状态为exhausted(耗尽)。
@@ -46,10 +46,9 @@ public class RedisUtil {
     //在borrow一个jedis实例时，是否提前进行validate操作；如果为true，则得到的jedis实例均是可用的；
     private static boolean TEST_ON_BORROW = true;
 
-    private static JedisPool jedisPool ;
+    private static JedisPool jedisPool;
 
     //默认的数据库为0
-
 
 
     /**
@@ -60,14 +59,11 @@ public class RedisUtil {
     public final static int EXRP_MONTH = 60 * 60 * 24 * 30;   //一个月
 
 
-
-
-
     /**
      * 初始化Redis连接池,注意一定要在使用前初始化一次,一般在项目启动时初始化就行了
      */
-    public static JedisPool  initialPool() {
-        JedisPool jp=null;
+    public static JedisPool initialPool() {
+        JedisPool jp = null;
         try {
             JedisPoolConfig config = new JedisPoolConfig();
             config.setMaxTotal(MAX_ACTIVE);
@@ -79,26 +75,21 @@ public class RedisUtil {
             config.setTestOnReturn(true);
             config.setNumTestsPerEvictionRun(-1);
             jp = new JedisPool(config, ADDR_ARRAY, PORT, TIMEOUT, AUTH);
-            jedisPool=jp;
+            jedisPool = jp;
             // threadLocalJedis.set(getJedis());
         } catch (Exception e) {
 
-            _logger.error("redis服务器异常",e);
+            _logger.error("redis服务器异常", e);
 
         }
 
-        return  jp;
+        return jp;
     }
-
 
 
     public static void close(Jedis jedis) {
         jedis.close();
     }
-
-
-
-
 
 
 //    /**
@@ -116,13 +107,13 @@ public class RedisUtil {
      *
      * @return Jedis
      */
-    public static  Jedis getJedis() {
+    public static Jedis getJedis() {
         boolean success = false;
         Jedis jedis = null;
 //        if (jedisPool == null) {
 //            poolInit();
 //        }
-        int i=0;
+        int i = 0;
         while (!success) {
             i++;
             try {
@@ -130,21 +121,21 @@ public class RedisUtil {
                     jedis = jedisPool.getResource();
 
 
-                }else {
+                } else {
                     throw new RuntimeException("redis连接池初始化失败");
                 }
             } catch (Exception e) {
 
-                _logger.info(Thread.currentThread().getName()+":第"+i+"次获取失败!!!");
+                _logger.info(Thread.currentThread().getName() + ":第" + i + "次获取失败!!!");
                 success = false;
 
-                _logger.error("redis服务器异常",e);
+                _logger.error("redis服务器异常", e);
             }
-            if (jedis!=null){
-                success=true;
+            if (jedis != null) {
+                success = true;
             }
 
-            if (i>=10&&i<20){
+            if (i >= 10 && i < 20) {
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
@@ -153,7 +144,7 @@ public class RedisUtil {
 
             }
 
-            if (i>=20&&i<30){
+            if (i >= 20 && i < 30) {
                 try {
                     Thread.sleep(2000);
                 } catch (InterruptedException e) {
@@ -162,7 +153,7 @@ public class RedisUtil {
 
             }
 
-            if (i>=30&&i<40){
+            if (i >= 30 && i < 40) {
                 try {
                     Thread.sleep(3000);
                 } catch (InterruptedException e) {
@@ -171,7 +162,7 @@ public class RedisUtil {
 
             }
 
-            if (i>=40){
+            if (i >= 40) {
                 _logger.error("redis彻底连不上了~~~~(>_<)~~~~");
                 return null;
             }
@@ -179,8 +170,6 @@ public class RedisUtil {
         }
         return jedis;
     }
-
-
 
 
     /**
@@ -197,8 +186,8 @@ public class RedisUtil {
             jo = getJedis();
             jo.set(key, value);
         } catch (Exception e) {
-            _logger.error("redis服务器异常",e);
-            throw new  RuntimeException("redis服务器异常");
+            _logger.error("redis服务器异常", e);
+            throw new RuntimeException("redis服务器异常");
         } finally {
             if (jo != null) {
                 close(jo);
@@ -222,8 +211,8 @@ public class RedisUtil {
             jo.setex(key, seconds, value);
         } catch (Exception e) {
 
-            _logger.error("redis服务器异常",e);
-            throw new  RuntimeException("redis服务器异常");
+            _logger.error("redis服务器异常", e);
+            throw new RuntimeException("redis服务器异常");
         } finally {
             if (jo != null) {
                 close(jo);
@@ -251,8 +240,8 @@ public class RedisUtil {
             }
             return jo.get(key);
         } catch (Exception e) {
-            _logger.error("redis服务器异常",e);
-            throw new  RuntimeException("redis操作错误");
+            _logger.error("redis服务器异常", e);
+            throw new RuntimeException("redis操作错误");
         } finally {
             if (jo != null) {
                 close(jo);
@@ -269,8 +258,8 @@ public class RedisUtil {
 
             return jo.incrBy(key, integer);
         } catch (Exception e) {
-            _logger.error("redis服务器异常",e);
-            throw new  RuntimeException("redis操作错误");
+            _logger.error("redis服务器异常", e);
+            throw new RuntimeException("redis操作错误");
         } finally {
             if (jo != null) {
                 close(jo);
@@ -285,8 +274,8 @@ public class RedisUtil {
             jo = getJedis();
             return jo.decrBy(key, integer);
         } catch (Exception e) {
-            _logger.error("redis服务器异常",e);
-            throw new  RuntimeException("redis操作错误");
+            _logger.error("redis服务器异常", e);
+            throw new RuntimeException("redis操作错误");
         } finally {
             if (jo != null) {
                 close(jo);
@@ -296,14 +285,14 @@ public class RedisUtil {
     }
 
     //删除多个key
-    public static  long  delKeys(String [] keys){
+    public static long delKeys(String[] keys) {
         Jedis jo = null;
         try {
             jo = getJedis();
             return jo.del(keys);
         } catch (Exception e) {
-            _logger.error("redis服务器异常",e);
-            throw new  RuntimeException("redis操作错误");
+            _logger.error("redis服务器异常", e);
+            throw new RuntimeException("redis操作错误");
         } finally {
             if (jo != null) {
                 close(jo);
@@ -313,14 +302,14 @@ public class RedisUtil {
     }
 
     //删除单个key
-    public static  long  delKey(String  key){
+    public static long delKey(String key) {
         Jedis jo = null;
         try {
             jo = getJedis();
             return jo.del(key);
         } catch (Exception e) {
-            _logger.error("redis服务器异常",e);
-            throw new  RuntimeException("redis操作错误");
+            _logger.error("redis服务器异常", e);
+            throw new RuntimeException("redis操作错误");
         } finally {
             if (jo != null) {
                 close(jo);
@@ -330,14 +319,14 @@ public class RedisUtil {
     }
 
     //添加到队列尾
-    public static  long  rpush(String  key,String node){
+    public static long rpush(String key, String node) {
         Jedis jo = null;
         try {
             jo = getJedis();
-            return jo.rpush(key,node);
+            return jo.rpush(key, node);
         } catch (Exception e) {
-            _logger.error("redis服务器异常",e);
-            throw new  RuntimeException("redis操作错误");
+            _logger.error("redis服务器异常", e);
+            throw new RuntimeException("redis操作错误");
         } finally {
             if (jo != null) {
                 close(jo);
@@ -348,14 +337,14 @@ public class RedisUtil {
 
 
     //删除list元素
-    public static  long  delListNode(String  key,int count,String value){
+    public static long delListNode(String key, int count, String value) {
         Jedis jo = null;
         try {
             jo = getJedis();
-            return jo.lrem(key,count,value);
+            return jo.lrem(key, count, value);
         } catch (Exception e) {
-            _logger.error("redis服务器异常",e);
-            throw new  RuntimeException("redis操作错误");
+            _logger.error("redis服务器异常", e);
+            throw new RuntimeException("redis操作错误");
         } finally {
             if (jo != null) {
                 close(jo);
@@ -363,106 +352,106 @@ public class RedisUtil {
         }
 
     }
-
-
 
 
     //获取所有list
 
-    public static List getListAll(String key){
+    public static List getListAll(String key) {
         Jedis jo = null;
-        List list=null;
+        List list = null;
         try {
             jo = getJedis();
-            list=    jo.lrange(key,0,-1);
+            list = jo.lrange(key, 0, -1);
         } catch (Exception e) {
-            _logger.error("redis服务器异常",e);
-            throw new  RuntimeException("redis操作错误");
+            _logger.error("redis服务器异常", e);
+            throw new RuntimeException("redis操作错误");
         } finally {
             if (jo != null) {
                 close(jo);
             }
         }
-        return  list;
+        return list;
     }
 
     /**
-     *
-     * @param key :hashkey
+     * @param key      :hashkey
      * @param fieldKey 字段
-     * @param fieldV 字段值
+     * @param fieldV   字段值
      */
 
-    public static  Long hset(String key,String fieldKey,String fieldV){
+    public static Long hset(String key, String fieldKey, String fieldV) {
         Jedis jo = null;
         Long r;
         try {
             jo = getJedis();
-            r=   jo.hset(key,fieldKey,fieldV);
+            r = jo.hset(key, fieldKey, fieldV);
         } catch (Exception e) {
-            _logger.error("redis服务器异常",e);
-            throw new  RuntimeException("redis操作错误");
+            _logger.error("redis服务器异常", e);
+            throw new RuntimeException("redis操作错误");
         } finally {
             if (jo != null) {
                 close(jo);
             }
         }
 
-        return  r;
-    };
+        return r;
+    }
+
+    ;
+
     /**
-     *
-     * @param key :hashkey
+     * @param key      :hashkey
      * @param fieldKey 字段
-     *
      */
 
-    public static  String hget(String key,String fieldKey){
+    public static String hget(String key, String fieldKey) {
         Jedis jo = null;
         String r;
         try {
             jo = getJedis();
-            r=   jo.hget(key,fieldKey);
+            r = jo.hget(key, fieldKey);
         } catch (Exception e) {
-            _logger.error("redis服务器异常",e);
-            throw new  RuntimeException("redis操作错误");
+            _logger.error("redis服务器异常", e);
+            throw new RuntimeException("redis操作错误");
         } finally {
             if (jo != null) {
                 close(jo);
             }
         }
 
-        return  r;
-    };
+        return r;
+    }
+
+    ;
 
 
     /**
-     *
-     * @param key :hashkey
+     * @param key      :hashkey
      * @param fieldKey 字段
-     *
      */
 
-    public static  Long hdel(String key,String fieldKey){
+    public static Long hdel(String key, String fieldKey) {
         Jedis jo = null;
         Long r;
         try {
             jo = getJedis();
-            r=   jo.hdel(key,fieldKey);
+            r = jo.hdel(key, fieldKey);
         } catch (Exception e) {
-            _logger.error("redis服务器异常",e);
-            throw new  RuntimeException("redis操作错误");
+            _logger.error("redis服务器异常", e);
+            throw new RuntimeException("redis操作错误");
         } finally {
             if (jo != null) {
                 close(jo);
             }
         }
 
-        return  r;
-    };
+        return r;
+    }
+
+    ;
 
     //清理缓存redis
-    public  static  void cleanLoacl(Jedis jo){
+    public static void cleanLoacl(Jedis jo) {
         close(jo);
     }
 

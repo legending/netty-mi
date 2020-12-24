@@ -13,11 +13,11 @@ import org.springframework.stereotype.Component;
 public class UserProc {
 
     //新用户建立连接
-  public   ApiResult getLineNum(ChannelHandlerContext ctx, IMRequest request){
-        ApiResult result=ApiResult.success();
+    public ApiResult getLineNum(ChannelHandlerContext ctx, IMRequest request) {
+        ApiResult result = ApiResult.success();
         result.setUrl(request.getUrl());
         result.setData(GroupChannelManager.getAllChannel().size());
         ctx.writeAndFlush(new TextWebSocketFrame(JSON.toJSONString(result)));
-        return  result;
+        return result;
     }
 }

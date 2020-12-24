@@ -10,13 +10,16 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 public class GroupChannelManager {
-    private GroupChannelManager(){};
-    private static ChannelGroup channels=new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
+    private GroupChannelManager() {
+    }
+
+    ;
+    private static ChannelGroup channels = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
     //记录当前用户与通道Map
-    private static ConcurrentMap<String, String> userChannelMap=new ConcurrentHashMap();
+    private static ConcurrentMap<String, String> userChannelMap = new ConcurrentHashMap();
 
     //获取所有的通道
-    public  static ChannelGroup  getAllChannel(){
-            return  channels;
+    public static ChannelGroup getAllChannel() {
+        return channels;
     }
 }

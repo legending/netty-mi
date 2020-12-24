@@ -9,9 +9,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 @MapperScan("com.legend.nettyim.mapper")
 public class IMApplication {
-	private static final Logger log = LoggerFactory.getLogger(IMApplication.class);
-	public static void main(String[] args) {
-		SpringApplication.run(IMApplication.class, args);
+    private static final Logger log = LoggerFactory.getLogger(IMApplication.class);
 
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(IMApplication.class, args);
+
+    }
 }

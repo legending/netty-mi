@@ -1,6 +1,6 @@
 package com.legend.nettyim.controller;
 
-import com.legend.nettyim.common.util.Constants.AppVule;
+import com.legend.nettyim.common.util.Constants.AppValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class IMController {
     @Autowired
-    private AppVule appVule;
+    private AppValue appValue;
+
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String toWelCome(ModelMap modelMap){
-        modelMap.put("wsUrl",appVule.wsUrl);
-        modelMap.put("wsPort",appVule.wsPort);
+    public String toWelCome(ModelMap modelMap) {
+        modelMap.put("wsUrl", appValue.wsUrl);
+        modelMap.put("wsPort", appValue.wsPort);
         return "index";
     }
-
 
 
 }
