@@ -295,17 +295,6 @@
               layer.msg("与服务器没有连接成功,请刷新页面重新连接!");
           }
       }
-      function send(message) {
-          if (!window.WebSocket) {
-              return;
-          }
-          if (socket.readyState == WebSocket.OPEN) {
-              socket.send(message);
-          }
-          else {
-              layer.msg("与服务器没有连接成功,请刷新页面重新连接!");
-          }
-      }
 
       //序列化参数
       function encode(url,obj) {

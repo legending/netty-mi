@@ -51,7 +51,7 @@ public class MsgProc {
             //                            channel.writeAndFlush(new TextWebSocketFrame("我是菜鸡服务器:"+"  "+request ));
             //                        }
 
-
+            //因为是群聊所以发给所有socket
             channel.writeAndFlush(new TextWebSocketFrame(JSON.toJSONString(apiResult)));
         }
 

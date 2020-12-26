@@ -26,12 +26,12 @@ public class MsgRoute {
     @Autowired
     private UserProc userProc;
 
-    //路由分配,暂时写死,后期可以注解反射来实现
+    //获得最终的文本消息对应的动作
     public ApiResult distribute(ChannelHandlerContext ctx, String request) {
 
         //安全防护
-        InetSocketAddress insocket = (InetSocketAddress) ctx.channel().remoteAddress();
-        String clientIP = insocket.getAddress().getHostAddress();
+        InetSocketAddress client = (InetSocketAddress) ctx.channel().remoteAddress();
+        String clientIP = client.getAddress().getHostAddress();
         String bv = RedisUtil.hget(Constants.blackMap, clientIP);
         if (!StrUtil.isEmpty(bv)) {
             ApiResult result = ApiResult.fail("你已被列入黑名单,无法访问系统");
@@ -67,7 +67,7 @@ public class MsgRoute {
 
         IMRequest imreq = JSON.parseObject(request, IMRequest.class);
         ApiResult result = null;
-        //群消息
+        //发送群消息
         if (imreq.getUrl().equals(MsgProtocol.quan_min_ga_liao)) {
             result = msgProc.groupMsg(ctx, imreq);
             return result;

@@ -43,22 +43,22 @@ public class NettyServer implements ApplicationRunner {
                 @Override
                 protected void initChannel(SocketChannel ch) throws Exception {
                     ChannelPipeline pipeline = ch.pipeline();
-                    pipeline.addLast("http-codec", new HttpServerCodec());
-                    pipeline.addLast("aggregator", new HttpObjectAggregator(65536));
-                    ch.pipeline().addLast("http-chunked", new ChunkedWriteHandler());
+                    pipeline.addLast("http-codec", new HttpServerCodec());//将传输层的tcp字节流解析为HttpRequest
+                    pipeline.addLast("aggregator", new HttpObjectAggregator(65536));//将HttpRequest解码成FullHttpRequest,content最大容量为64MB
+                    ch.pipeline().addLast("http-chunked", new ChunkedWriteHandler());//大数据块处理器，如文件传输
                     pipeline.addLast("handler", new WebSocketServerHandler());
                 }
             });
             //Thread.sleep(1000*40);
 
             ChannelFuture future = b.bind(Integer.valueOf(port));  //第一条线程从这里开始创建
-            future = future.sync();
+            future = future.sync();//阻塞当前线程知道监听建立
             Channel ch = future.channel();
             // Channel ch = b.bind(Integer.valueOf(port)).sync().channel();
             log.info("Web socket server started at port " + port + '.');
 
 
-            ch.closeFuture().sync();
+            ch.closeFuture().sync();//阻塞当前线程直到服务停止
 
         } finally {
             bossGroup.shutdownGracefully();

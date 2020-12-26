@@ -41,10 +41,10 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<Object> 
         log.debug("channelRead0:" + Thread.currentThread().getName());
         // 传统的HTTP接入
         if (msg instanceof FullHttpRequest) {
+            log.debug("传统的HTTP接入");//对应的前端动作就是建立socket连接：socket = new WebSocket("ws://${wsUrl}:${wsPort}/websocket");
             handleHttpRequest(ctx, (FullHttpRequest) msg);
-        }
-        // WebSocket接入
-        else if (msg instanceof WebSocketFrame) {
+        } else if (msg instanceof WebSocketFrame) { // WebSocket接入
+            log.debug("WebSocket接入");
             handleWebSocketFrame(ctx, (WebSocketFrame) msg);
         }
     }
@@ -63,7 +63,7 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<Object> 
             return;
         }
 
-        // 构造握手响应返回，本机测试
+        // 构造握手响应返回，本机测试 --> 必须步骤注释掉一下代码块无法建立连接
         WebSocketServerHandshakerFactory wsFactory = new WebSocketServerHandshakerFactory("ws://localhost:1949/222websocket/2222", null, false);
         handShaker = wsFactory.newHandshaker(req);
         if (handShaker == null) {
@@ -98,8 +98,8 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<Object> 
 
         if (StrUtil.isNotEmpty(request)) {
 
-            WorkRunable workRunable = new WorkRunable(ctx, request);
-            workPool.execute(workRunable);
+            WorkRunnable workRunnable = new WorkRunnable(ctx, request);
+            workPool.execute(workRunnable);
         }
 
     }
@@ -137,7 +137,7 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<Object> 
         apiResult.setData(GroupChannelManager.getAllChannel().size());
 
         for (Channel channel : GroupChannelManager.getAllChannel()) {
-
+            //通知所有socket有新的连接进来
             channel.writeAndFlush(new TextWebSocketFrame(JSON.toJSONString(apiResult)));
         }
         // GroupChannelManager.getAllChannel()
@@ -154,17 +154,17 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<Object> 
         apiResult.setData(GroupChannelManager.getAllChannel().size());
 
         for (Channel channel : GroupChannelManager.getAllChannel()) {
-
+            //通知所有socket有有一个连接关闭了
             channel.writeAndFlush(new TextWebSocketFrame(JSON.toJSONString(apiResult)));
         }
     }
 
-    class WorkRunable implements Runnable {
+    class WorkRunnable implements Runnable {
 
         private ChannelHandlerContext ctx;
         private String request;
 
-        public WorkRunable(ChannelHandlerContext ctx, String request) {
+        public WorkRunnable(ChannelHandlerContext ctx, String request) {
             this.ctx = ctx;
             this.request = request;
         }
